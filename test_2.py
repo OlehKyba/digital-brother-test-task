@@ -1,3 +1,4 @@
+import re
 from typing import List, Tuple, Union
 from dataclasses import dataclass
 
@@ -110,17 +111,21 @@ def quick_test():
     print(graph.min_cost(bydgoszcz, warszawa))
 
 
+class ValidationError(Exception):
+    pass
+
+
 def main():
     tests_number: int = int(input("The number of tests <= 10: "))
 
-    if tests_number > 10:
-        raise ValueError("The number of tests must be <= 10000!")
+    if tests_number > 10 or tests_number <= 0:
+        raise ValidationError("The number of tests must be <= 10000 and > 0!")
 
     for _ in range(tests_number):
         cities_number: int = int(input("the number of cities <= 10000: "))
 
-        if cities_number > 10000:
-            raise ValueError("The number of cities must be <= 10000!")
+        if cities_number > 10000 or cities_number <= 0:
+            raise ValidationError("The number of cities must be <= 10000 and > 0!")
 
         nodes = [Node(str(i)) for i in range(cities_number)]
         cities = {}
@@ -128,6 +133,11 @@ def main():
 
         for i in range(cities_number):
             city_name: str = input("City name: ")
+            city_pattern = re.compile("^[a-z]$")
+            if len(city_name) > 10 or not city_pattern.match(city_name):
+                raise ValidationError("The name of a city is a string containing characters a,...,z "
+                                      "and is at most 10 characters long.")
+
             nodes[i].data = city_name
             cities[city_name] = nodes[i]
 
@@ -141,8 +151,8 @@ def main():
 
         paths_number: int = int(input("The number of paths to find <= 100: "))
 
-        if cities_number > 100:
-            raise ValueError("The number of paths to find must be <= 10000!")
+        if cities_number > 100 or cities_number <= 0:
+            raise ValidationError("The number of paths to find must be <= 10000 and > 0!")
 
         paths = [input(f"Path #{i + 1}: ") for i in range(paths_number)]
 
@@ -159,3 +169,5 @@ if __name__ == '__main__':
         main()
     except ValueError:
         print("Invalid input!")
+    except ValidationError as e:
+        print(e)
