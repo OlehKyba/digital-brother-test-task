@@ -17,10 +17,11 @@ class Node:
 
 class Graph:
 
-    def __init__(self, col: int, row: int, nodes: List[Node] = []):
+    def __init__(self, col: int, row: int, nodes: List[Node] = [], max_cost: int = 200000):
         # Adjacency matrix
         self.adj_matrix = [[0] * col for _ in range(row)]
         self.nodes = nodes
+        self.max_cost = max_cost
         # Set the indexes for the nodes
         for i in range(len(self.nodes)):
             self.nodes[i].index = i
@@ -86,6 +87,10 @@ class Graph:
             # if the total distance is less than the current distance in the dist array
             for (source_node, weight) in neighbors:
                 tot_dist = weight + current_dist
+
+                if tot_dist == self.max_cost:
+                    raise MaximumCostError(self.max_cost)
+
                 if tot_dist < dist[source_node.index][0]:
                     dist[source_node.index][0] = tot_dist
                     dist[source_node.index][1] = [*dist[current_node_index][1], source_node]
@@ -113,6 +118,12 @@ def quick_test():
 
 class ValidationError(Exception):
     pass
+
+
+class MaximumCostError(Exception):
+
+    def __init__(self, max_cost):
+        self.message = f"Maximum cost raised ({max_cost})!"
 
 
 def main():
@@ -170,4 +181,6 @@ if __name__ == '__main__':
     except ValueError:
         print("Invalid input!")
     except ValidationError as e:
+        print(e)
+    except MaximumCostError as e:
         print(e)
