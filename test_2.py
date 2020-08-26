@@ -113,13 +113,13 @@ def quick_test():
 def main():
     tests_number: int = int(input("The number of tests <= 10: "))
 
-    if tests_number <= 10:
+    if tests_number > 10:
         raise ValueError("The number of tests must be <= 10000!")
 
     for _ in range(tests_number):
         cities_number: int = int(input("the number of cities <= 10000: "))
 
-        if cities_number <= 10000:
+        if cities_number > 10000:
             raise ValueError("The number of cities must be <= 10000!")
 
         nodes = [Node(str(i)) for i in range(cities_number)]
@@ -141,7 +141,7 @@ def main():
 
         paths_number: int = int(input("The number of paths to find <= 100: "))
 
-        if cities_number <= 100:
+        if cities_number > 100:
             raise ValueError("The number of paths to find must be <= 10000!")
 
         paths = [input(f"Path #{i + 1}: ") for i in range(paths_number)]
@@ -156,6 +156,6 @@ def main():
 
 if __name__ == '__main__':
     try:
-        quick_test()
+        main()
     except ValueError:
         print("Invalid input!")
