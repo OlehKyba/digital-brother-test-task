@@ -38,6 +38,9 @@ if __name__ == "__main__":
     quick_test()
     try:
         n = int(input("Count sum of the digits in the factorial of: "))
-        print(sum_of_factorial_digits(n))
+        if n < 0:
+            print("Must be a natural!")
+        else:
+            print(sum_of_factorial_digits(n))
     except ValueError:
         print("Incorrect input!")
